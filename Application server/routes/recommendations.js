@@ -8,7 +8,7 @@ dotenv.config();
 const router = express.Router();
 
 //const GEMINI_API_KEY = config.get("your-gemini-Api-Key");
-const GEMINI_API_KEY = process.env.your-gemini-Api-Key;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 

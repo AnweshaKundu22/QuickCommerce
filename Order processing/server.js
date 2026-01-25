@@ -31,10 +31,7 @@ app.use("/api/logistics", routes);
 // -----------------------------
 // DB connection + server start
 // -----------------------------
-mongoose.connect(process.env.mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.mongoURI)
 .then(() => {
   console.log("✅ Connected to MongoDB for Order Processing");
   app.listen(PORT, () => {

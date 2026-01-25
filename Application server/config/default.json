@@ -1,6 +1,0 @@
-{
-    "your-gemini-Api-Key": "AIzaSyAdy2A6I0l8UGIR3k0qIBLFJAQ1oHgnweA",
-    "mongoURI": "mongodb+srv://reach2anwesha_db_user:AnweshaDB2002@quickcommerce-cluster.dfgv8em.mongodb.net/quick_commerce?appName=quickcommerce-cluster",
-    "jwtSecret": "a8318e2ec2ce0fdb9166950d847343e848ee5b0a15a03bb77ef66b29643ed1cdaf2542b3331cd8bd71b8b3aa1a605bfa0c80763415ab4970d3672df4e13b64a4",
-    "port": "5000"
-}
