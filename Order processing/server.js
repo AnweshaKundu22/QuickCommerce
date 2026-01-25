@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import routes from "./routes/routes.js"; // ESM import
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
@@ -10,7 +12,7 @@ const app = express();
 // Config
 // -----------------------------
 const PORT = 6000;
-const MONGODB_URI = "mongodb://localhost:27017/quickcommerce";
+//const MONGODB_URI = "mongodb+srv://reach2anwesha_db_user:AnweshaDB2002@quickcommerce-cluster.dfgv8em.mongodb.net/quick_commerce?appName=quickcommerce-cluster";
 
 // -----------------------------
 // Middleware
@@ -29,7 +31,7 @@ app.use("/api/logistics", routes);
 // -----------------------------
 // DB connection + server start
 // -----------------------------
-mongoose.connect(MONGODB_URI, {
+mongoose.connect(process.env.mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
