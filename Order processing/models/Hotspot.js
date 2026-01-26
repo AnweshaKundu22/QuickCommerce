@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const hotspotSchema = new mongoose.Schema({
   name: {
@@ -20,4 +20,4 @@ const hotspotSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Hotspot", hotspotSchema);
+export default mongoose.model("Hotspot", hotspotSchema);

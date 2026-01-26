@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function OrderConfirmation() {
   const location = useLocation();
@@ -57,7 +58,7 @@ export default function OrderConfirmation() {
     const fetchStatus = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/orders/logistics/status/${order._id}`,
+          `${API_BASE_URL}/api/orders/logistics/status/${order._id}`,
           {
             headers: {
               "Content-Type": "application/json",

@@ -3,9 +3,14 @@ import express from "express";
 import Order from "../models/Order.js";
 import { authMiddleware } from "../middleware/middleware.js";
 import http from "http"; // Node HTTP agent
+import https from "https";
+const ORDER_PROCESSING_BASE_URL = process.env.ORDER_PROCESSING_BASE_URL;
 
 const router = express.Router();
 
+function getHttpClient(url) {
+  return url.protocol === "https:" ? https : http;
+}
 /**
  * Helper: reliably get the ESM Item model
  */
@@ -19,14 +24,15 @@ async function getItemModel() {
 // -----------------------------
 async function fetchOrderStatusFromProcessing(orderId) {
   return new Promise((resolve, reject) => {
+    const url = new URL(`/api/logistics/status/${orderId}`, ORDER_PROCESSING_BASE_URL);
     const options = {
-      hostname: "127.0.0.1",
-      port: 6000,
-      path: `/api/logistics/status/${orderId}`,
+      hostname: url.hostname,
+      port: url.port || (url.protocol === "https:" ? 443 : 80),
+      path: url.pathname,
       method: "GET",
     };
-
-    const reqHttp = http.request(options, (resp) => {
+    const client = getHttpClient(url);
+    const reqHttp = client.request(options, (resp) => {
       let data = "";
       resp.on("data", (chunk) => (data += chunk));
       resp.on("end", () => {
@@ -173,19 +179,24 @@ router.post("/checkout", authMiddleware, async (req, res) => {
     });
 
     // Call Order Processing server
+    if (!ORDER_PROCESSING_BASE_URL) {
+      throw new Error("ORDER_PROCESSING_BASE_URL is not defined in environment variables");
+    }
+    const url = new URL("/api/logistics/nearest", ORDER_PROCESSING_BASE_URL);
+
     const logisticsData = await new Promise((resolve, reject) => {
       const options = {
-        hostname: "127.0.0.1",
-        port: 6000,
-        path: "/api/logistics/nearest",
+        hostname: url.hostname,
+        port: url.port || (url.protocol === "https:" ? 443 : 80),
+        path: url.pathname,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Content-Length": Buffer.byteLength(postData)
         }
       };
-
-      const reqHttp = http.request(options, (resp) => {
+      const client = getHttpClient(url);
+      const reqHttp = client.request(options, (resp) => {
         let body = "";
         resp.on("data", chunk => (body += chunk));
         resp.on("end", () => {

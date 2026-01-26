@@ -1,21 +1,25 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import config from "config";
+//import config from "config";
 import authRoutes from "./routes/auth.js";
 import orderRoutes from "./routes/order.js";
 import recommendationsRoute from "./routes/recommendations.js"; // ✅ NEW
 import Item from "./models/Item.js";
 import Order from "./models/Order.js";
 import { authMiddleware } from "./middleware/middleware.js";
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const app = express();
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // -----------------------
 // Middleware
 // -----------------------
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: FRONTEND_URL,
   credentials: true
 }));
 app.use(express.json());
@@ -84,7 +88,8 @@ app.use("/api/recommendations", recommendationsRoute); // ✅ connect recommenda
 // -----------------------
 // MongoDB Connect + Start
 // -----------------------
-mongoose.connect(config.get("mongoURI"))
+//mongoose.connect(config.get("mongoURI"))
+mongoose.connect(process.env.mongoURI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
