@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function HomePage({ cart, setCart, cartCount, setCartCount, setToken, userId }) {
   const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ export default function HomePage({ cart, setCart, cartCount, setCartCount, setTo
   // -----------------------------
   useEffect(() => {
     if (!token || !userId) return;
-    fetch("http://localhost:5000/api/orders/cart", {
+    fetch(`${API_BASE_URL}/api/orders/cart`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => res.json())
@@ -39,7 +40,7 @@ export default function HomePage({ cart, setCart, cartCount, setCartCount, setTo
   // Fetch all products from backend
   // -----------------------------
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch(`${API_BASE_URL}/api/products`)
       .then(res => res.json())
       .then(data => setProducts(Array.isArray(data) ? data : []))
       .catch(err => console.error("Error fetching products:", err));
@@ -51,7 +52,7 @@ export default function HomePage({ cart, setCart, cartCount, setCartCount, setTo
   useEffect(() => {
     if (!token || !userId) return;
 
-    fetch("http://localhost:5000/api/recommendations", {
+    fetch(`${API_BASE_URL}/api/recommendations`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +79,7 @@ export default function HomePage({ cart, setCart, cartCount, setCartCount, setTo
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/orders/cart", {
+      const res = await fetch(`${API_BASE_URL}/api/orders/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 // Frontend/src/components/Cart.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Cart({
   setToken,
@@ -29,7 +30,7 @@ export default function Cart({
 
   const fetchCart = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/orders/cart", {
+      const res = await fetch(`${API_BASE_URL}/api/orders/cart`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch cart");
@@ -66,7 +67,7 @@ export default function Cart({
     if (newQty < 1) return removeItem(productId);
     try {
       const delta = newQty - oldQty;
-      const res = await fetch("http://localhost:5000/api/orders/cart", {
+      const res = await fetch(`${API_BASE_URL}/api/orders/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +100,7 @@ export default function Cart({
   const removeItem = async (productId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/orders/cart/${productId}`,
+        `${API_BASE_URL}/api/orders/cart/${productId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -142,7 +143,7 @@ export default function Cart({
     }
     try {
       setCheckoutError("");
-      const res = await fetch("http://localhost:5000/api/orders/checkout", {
+      const res = await fetch(`${API_BASE_URL}/api/orders/checkout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
